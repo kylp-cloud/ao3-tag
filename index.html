@@ -77,8 +77,9 @@
             event.preventDefault();
             
             // Get the textarea value and split it by newlines
-            const textValue = document.getElementById('contentInput').value;
-            const lines = textValue.split(/\r?\n/);
+            const textDoc = document.getElementById('contentInput');
+            const lines = textDoc.value.split(/\r?\n/);
+            textDoc.value = '';
             
             // Extract the 2nd line (index 1) and 6th line (index 5)
             // Using || '' to safely handle cases where the line might not exist
@@ -107,9 +108,27 @@
                 <div class="result-line">${processedLine2} ${processedLine6}</div>
             `;
             
+            copyToClipboard(`${processedLine2} ${processedLine6}`);
+            
             // Show the result container
             outputContainer.style.display = 'block';
         });
+        function copyToClipboard(textToCopy) {
+            // Check if the Clipboard API is supported
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        alert("Copied to clipboard successfully!");
+                    })
+                    .catch(err => {
+                        console.error("Clipboard API failed, falling back...", err);
+                        fallbackCopyToClipboard(textToCopy);
+                    });
+            } else {
+                // Fallback for older iOS versions or non-HTTPS environments
+                fallbackCopyToClipboard(textToCopy);
+            }
+        }
     </script>
 
 </body>
