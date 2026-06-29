@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Processor</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0 20px;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: monospace;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            align-self: flex-start;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output-container {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #007bff;
+            border-radius: 4px;
+        }
+        .result-line {
+            font-family: monospace;
+            background: #fff;
+            padding: 8px;
+            border: 1px solid #e9ecef;
+            margin: 5px 0;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Text Line Processor</h2>
+    
+    <form id="textForm">
+        <label for="contentInput">Paste your context below:</label>
+        <textarea id="contentInput" placeholder="Paste text here..."></textarea>
+        <button type="submit">Process Text</button>
+    </form>
+
+    <div id="output-container" style="display: none;">
+        <h3>Processed Result:</h3>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        document.getElementById('textForm').addEventListener('submit', function(event) {
+            // Prevent the form from refreshing the page on submit
+            event.preventDefault();
+            
+            // Get the textarea value and split it by newlines
+            const textValue = document.getElementById('contentInput').value;
+            const lines = textValue.split(/\r?\n/);
+            
+            // Extract the 2nd line (index 1) and 6th line (index 5)
+            // Using || '' to safely handle cases where the line might not exist
+            const line2 = lines[1] || '';
+            const line6 = lines[5] || '';
+            
+            // Helper function to process each line:
+            // 1. Substitute all white space with underscore (_)
+            // 2. Substitute commas with white space ( )
+            function processLine(line) {
+                let step0 = line.replace(/, /g, ',');
+                let step1 = step0.replace(/\s/g, '_');
+                let step2 = step1.replace(/,/g, ' ');
+                return step2;
+            }
+            
+            const processedLine2 = processLine(line2);
+            const processedLine6 = processLine(line6);
+            
+            // Get DOM elements for output
+            const outputContainer = document.getElementById('output-container');
+            const outputDiv = document.getElementById('output');
+            
+            // Clear previous results
+            outputDiv.innerHTML = '';
+            
+            // Build and display the HTML output
+            outputDiv.innerHTML = `
+                <div class="result-line">${processedLine2} ${processedLine6}</div>
+            `;
+            
+            // Show the result container
+            outputContainer.style.display = 'block';
+        });
+    </script>
+
+</body>
+</html>
