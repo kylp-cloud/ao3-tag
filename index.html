@@ -89,7 +89,7 @@
             // 1. Substitute all white space with underscore (_)
             // 2. Substitute commas with white space ( )
             function processLine(line) {
-                return line.replace(/, /g, ',').replace(/ & /g, '&').replace(/\s/g, '_').replace(/,/g, ' ');
+                return line.replace(/, /g, ',').replace(/ & /g, '&').replace(/ | /g, '|').replace(/\s/g, '_').replace(/,/g, ' ');
             }
             
             const processedLine2 = processLine(line2);
