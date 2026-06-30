@@ -91,7 +91,7 @@
             function processLine(line) {
                 const words = line.split(',');
                 for (let i=0; i < words.length; i++) {
-                    word[i] = word[i].trim().replace(' & ', '&').replace(' | ', '|').replace(' (', '(').replace(' ', '_');
+                    words[i] = words[i].trim().replace(' & ', '&').replace(' | ', '|').replace(' (', '(').replace(' ', '_');
                 }
                 return words.join(' ');
             }
